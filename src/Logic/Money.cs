@@ -2,6 +2,14 @@
 
 public sealed class Money : ValueObject<Money>
 {
+    public static readonly Money None = new Money(0, 0, 0, 0, 0, 0);
+    public static readonly Money Cent = new Money(1, 0, 0, 0, 0, 0);
+    public static readonly Money TenCent = new Money(0, 1, 0, 0, 0, 0);
+    public static readonly Money Quarter = new Money(0, 0, 1, 0, 0, 0);
+    public static readonly Money Dollar = new Money(0, 0, 0, 1, 0, 0);
+    public static readonly Money FiveDollar = new Money(0, 0, 0, 0, 1, 0);
+    public static readonly Money TwentyDollar = new Money(0, 0, 0, 0, 0, 1);
+
     public int OneCentCount { get; }
     public int TenCentCount { get; }
     public int QuarterCentCount { get; }
@@ -9,13 +17,7 @@ public sealed class Money : ValueObject<Money>
     public int FiveDollarCount { get; }
     public int TwentyDollarCount { get; }
 
-    public decimal Amount
-    {
-        get
-        {
-            return OneCentCount * 0.01m + TenCentCount * 0.1m + QuarterCentCount * 0.25m + OneDollarCount + FiveDollarCount * 5 + TwentyDollarCount * 20;
-        }
-    }
+    public decimal Amount => OneCentCount * 0.01m + TenCentCount * 0.1m + QuarterCentCount * 0.25m + OneDollarCount + FiveDollarCount * 5 + TwentyDollarCount * 20;
 
     public Money(int oneCentCount, int tenCentCount, int quarterCentCount, int oneDollarCount, int fiveDollarCount, int twentyDollarCount)
     {
