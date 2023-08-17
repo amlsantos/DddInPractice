@@ -1,6 +1,6 @@
 ﻿namespace Logic;
 
-public sealed class Money
+public sealed class Money : ValueObject<Money>
 {
     public int OneCentCount { get; private set; }
     public int TenCentCount { get; private set; }
@@ -29,5 +29,31 @@ public sealed class Money
             fiveDollarCount: first.FiveDollarCount + second.FiveDollarCount,
             twentyDollarCount: first.TwentyDollarCount + second.TwentyDollarCount
             );
+    }
+
+    protected override bool EqualsCore(Money other)
+    {
+        return OneCentCount == other.OneCentCount &&
+            TenCentCount == other.TenCentCount &&
+            QuarterCentCount == other.QuarterCentCount &&
+            OneDollarCount == other.OneDollarCount &&
+            FiveDollarCount == other.FiveDollarCount &&
+            TwentyDollarCount == other.TwentyDollarCount;
+    }
+
+    protected override int GetHashCodeCore()
+    {
+        unchecked
+        {
+            int hashcode = OneCentCount;
+
+            hashcode = (hashcode * 397) ^ TenCentCount;
+            hashcode = (hashcode * 397) ^ QuarterCentCount;
+            hashcode = (hashcode * 397) ^ OneDollarCount;
+            hashcode = (hashcode * 397) ^ FiveDollarCount;
+            hashcode = (hashcode * 397) ^ TwentyDollarCount;
+
+            return hashcode;
+        }
     }
 }
