@@ -2,7 +2,7 @@
 
 namespace UI.Services;
 
-public class DialogService
+public class DialogService : IDialogService
 {
     public bool? ShowDialog(ViewModel viewModel)
     {

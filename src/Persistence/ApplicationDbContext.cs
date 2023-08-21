@@ -14,7 +14,8 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=DddInPractice");
+        if (!optionsBuilder.IsConfigured)
+            throw new InvalidOperationException("Invalid connection string");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

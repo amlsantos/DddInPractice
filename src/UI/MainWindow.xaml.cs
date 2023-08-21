@@ -3,26 +3,17 @@ using Persistence;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using UI.Common;
 
 namespace UI;
 
 public partial class MainWindow : Window
 {
-    private readonly ApplicationDbContext _applicationDbContext;
-
-    public MainWindow(ApplicationDbContext applicationDbContext)
+    public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
 
-        _applicationDbContext = applicationDbContext;
-
-        var xx = GetSnackMachines();
-
-        //DataContext = new MainViewModel();
-    }
-
-    public IEnumerable<Snack> GetSnackMachines()
-    {
-        return _applicationDbContext.Snacks.ToList();
+        DataContext = viewModel;
     }
 }
