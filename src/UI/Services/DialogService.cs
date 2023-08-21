@@ -1,13 +1,18 @@
-﻿using UI.Common;
-using UI.ViewModels.Common;
+﻿using UI.ViewModels;
+using UI.Views;
 
 namespace UI.Services;
 
 public class DialogService : IDialogService
 {
+    private readonly CustomWindow _window;
+    
+    public DialogService(CustomWindow window) => _window = window;
+
     public bool? ShowDialog(ViewModel viewModel)
     {
-        var window = new CustomWindow(viewModel);
-        return window.ShowDialog();
+        _window.DataContext = viewModel;
+        
+        return _window.ShowDialog();
     }
 }

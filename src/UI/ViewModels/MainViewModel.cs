@@ -1,20 +1,17 @@
-﻿using Logic;
-using UI.Services;
-using UI.ViewModels.Common;
+﻿using UI.Services;
 
 namespace UI.ViewModels;
 
 public class MainViewModel : ViewModel
 {
-    private readonly SnackMachine _snackMachine;
     private readonly IDialogService _dialogService;
+    private readonly SnackMachineViewModel _viewModel;
 
-    public MainViewModel(SnackMachine snackMachine, IDialogService dialogService)
+    public MainViewModel(IDialogService dialogService, SnackMachineViewModel viewModel)
     {
-        _snackMachine = snackMachine;
         _dialogService = dialogService;
+        _viewModel = viewModel;
 
-        var viewModel = new SnackMachineViewModel(_snackMachine);
-        _dialogService.ShowDialog(viewModel);
+        _dialogService.ShowDialog(_viewModel);
     }
 }

@@ -1,20 +1,17 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using UI.Services;
 
-namespace UI.ViewModels.Common;
+namespace UI.ViewModels;
 
 public abstract class ViewModel : INotifyPropertyChanged
 {
-    protected static readonly DialogService _dialogService = new DialogService();
-
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     private bool? _dialogResult;
 
     public bool? DialogResult
     {
-        get { return _dialogResult; }
+        get => _dialogResult;
         protected set
         {
             _dialogResult = value;

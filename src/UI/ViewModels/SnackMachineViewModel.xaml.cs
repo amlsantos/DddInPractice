@@ -1,22 +1,21 @@
-﻿using Logic;
+﻿using System;
+using Logic;
 using UI.Common;
-using UI.ViewModels.Common;
 
 namespace UI.ViewModels;
 
-public partial class SnackMachineViewModel : ViewModel
+public class SnackMachineViewModel : ViewModel
 {
+    private string _message = "";
     private readonly SnackMachine _snackMachine;
 
     public override string Caption => "Snack Machine";
     public string MoneyInTransaction => _snackMachine.MoneyInTransaction.Amount.ToString();
-    public Money MoneyInside => _snackMachine.MoneyInside + _snackMachine.MoneyInTransaction;
-
-    private string _message = "";
-
+    public string MoneyInside => (_snackMachine.MoneyInside + _snackMachine.MoneyInTransaction).Amount.ToString();
+    
     public string Message
     {
-        get { return _message; }
+        get => _message;
         private set
         {
             _message = value;

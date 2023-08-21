@@ -1,14 +1,11 @@
 ﻿using System.Windows;
-using UI.ViewModels.Common;
 
-namespace UI.Common;
+namespace UI.Views;
 
 public partial class CustomWindow : Window
 {
-    public CustomWindow(ViewModel viewModel)
+    public CustomWindow()
     {
         InitializeComponent();
-
-        DataContext = viewModel;
     }
 }

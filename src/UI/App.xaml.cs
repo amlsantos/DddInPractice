@@ -15,8 +15,8 @@ namespace UI;
 
 public partial class App : Application
 {
-    private IServiceProvider ServiceProvider { get;  }
-    private IConfiguration Configuration { get;  }
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IConfiguration _configuration;
 
     public App()
     {
@@ -24,32 +24,42 @@ public partial class App : Application
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
         
-        Configuration = builder.Build();
+        _configuration = builder.Build();
 
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
         
-        ServiceProvider = serviceCollection.BuildServiceProvider();
+        _serviceProvider = serviceCollection.BuildServiceProvider();
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
-        services.Configure<ConnectionStringsOptions>(Configuration.GetSection(nameof(ConnectionStringsOptions.ConnectionStrings)));
-        var serverOptions = Configuration.GetSection(nameof(ConnectionStringsOptions.ConnectionStrings)).Get<ConnectionStringsOptions>();
-        if (serverOptions is null)
-            throw new InvalidOperationException($"Invalid connection string. Please check your appsettings file");
+        services.Configure<ConnectionStringsOptions>(_configuration.GetSection(nameof(ConnectionStringsOptions.ConnectionStrings)));
+        var serverOptions = _configuration.GetSection(nameof(ConnectionStringsOptions.ConnectionStrings)).Get<ConnectionStringsOptions>();
+        if (serverOptions is null || string.IsNullOrEmpty(serverOptions.SqlServer))
+            throw new InvalidOperationException($"Invalid connection string. Please check your app-settings file");
 
+        // persistence
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(serverOptions?.SqlServer));
-
+        
+        // domain
         services.AddSingleton<SnackMachine>();
-        services.AddScoped<MainWindow>();
-        services.AddScoped<MainViewModel>();
+        
+        // services
         services.AddScoped<IDialogService, DialogService>();
+        
+        // views
+        services.AddScoped<MainWindow>();
+        services.AddScoped<CustomWindow>();
+        
+        // view models
+        services.AddScoped<MainViewModel>();
+        services.AddScoped<SnackMachineViewModel>();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        var mainWindow = ServiceProvider.GetService<MainWindow>();
-        mainWindow.Show();
+        var mainWindow = _serviceProvider.GetService<MainWindow>();
+        mainWindow?.Show();
     }
 }

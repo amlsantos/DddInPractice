@@ -1,5 +1,4 @@
-﻿using UI.Common;
-using UI.ViewModels.Common;
+﻿using UI.ViewModels;
 
 namespace UI.Services;
 
