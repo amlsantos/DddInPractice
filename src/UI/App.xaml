@@ -5,8 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Common/Images.xaml" />
-                <!--<ResourceDictionary Source="SnackMachineViewModel.xaml" />-->
+                <ResourceDictionary Source="Resources/Images.xaml" />
+                <ResourceDictionary Source="ViewModels/SnackMachineViewModel.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

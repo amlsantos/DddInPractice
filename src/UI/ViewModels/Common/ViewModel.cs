@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using UI.Services;
 
-namespace UI.Common;
+namespace UI.ViewModels.Common;
 
 public abstract class ViewModel : INotifyPropertyChanged
 {

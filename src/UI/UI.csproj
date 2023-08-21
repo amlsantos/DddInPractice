@@ -8,10 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Images\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.7.23375.6" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0-preview.7.23375.6" />
@@ -22,24 +18,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Images\10c.png" />
-		<Resource Include="Images\1c.png" />
-		<Resource Include="Images\1d.png" />
-		<Resource Include="Images\20d.png" />
-		<Resource Include="Images\25c.png" />
-		<Resource Include="Images\5d.png" />
-		<Resource Include="Images\Chocolate.png" />
-		<Resource Include="Images\Gum.png" />
-		<Resource Include="Images\Icon.png" />
-		<Resource Include="Images\Soda.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Update="Common\CustomWindow.xaml">
-		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		<Page Update="Views\MainWindow.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		  <XamlRuntime>Wpf</XamlRuntime>
+		  <SubType>Designer</SubType>
 		</Page>
-		<Page Update="Common\Images.xaml">
-			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		<Page Update="Resources\Images.xaml">
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		  <XamlRuntime>Wpf</XamlRuntime>
+		  <SubType>Designer</SubType>
+		</Page>
+		<Page Update="Views\CustomWindow.xaml">
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		  <XamlRuntime>Wpf</XamlRuntime>
+		  <SubType>Designer</SubType>
+		</Page>
+		<Page Update="ViewModels\SnackMachineViewModel.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		  <XamlRuntime>Wpf</XamlRuntime>
+		  <SubType>Designer</SubType>
 		</Page>
 	</ItemGroup>
 
@@ -48,6 +45,19 @@
 	  <Content Include="appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\Images\10c.png" />
+	  <Resource Include="Resources\Images\1c.png" />
+	  <Resource Include="Resources\Images\1d.png" />
+	  <Resource Include="Resources\Images\20d.png" />
+	  <Resource Include="Resources\Images\25c.png" />
+	  <Resource Include="Resources\Images\5d.png" />
+	  <Resource Include="Resources\Images\Chocolate.png" />
+	  <Resource Include="Resources\Images\Gum.png" />
+	  <Resource Include="Resources\Images\Icon.png" />
+	  <Resource Include="Resources\Images\Soda.png" />
 	</ItemGroup>
 
 </Project>

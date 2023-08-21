@@ -1,4 +1,5 @@
 ﻿using UI.Common;
+using UI.ViewModels.Common;
 
 namespace UI.Services;
 
@@ -6,9 +7,7 @@ public class DialogService : IDialogService
 {
     public bool? ShowDialog(ViewModel viewModel)
     {
-        //CustomWindow window = new CustomWindow(viewModel);
-        //return window.ShowDialog();
-
-        return true;
+        var window = new CustomWindow(viewModel);
+        return window.ShowDialog();
     }
 }

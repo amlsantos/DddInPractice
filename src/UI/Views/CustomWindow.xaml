@@ -3,14 +3,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:common="clr-namespace:UI.Common"
+        xmlns:common="clr-namespace:UI.ViewModels"
+        xmlns:common1="clr-namespace:UI.Common"
         mc:Ignorable="d"
         Title="{Binding Path=Caption}" Height="650" Width="800"
         WindowStartupLocation="CenterOwner"
         Icon="{StaticResource imgApplicationIcon}">
     <Grid>
         <Grid.Resources>
-            <common:MainDataTemplateSelector x:Key="selector" />
+            <common1:MainDataTemplateSelector x:Key="selector" />
         </Grid.Resources>
 
         <ContentPresenter ContentTemplateSelector="{StaticResource selector}" Content="{Binding}"></ContentPresenter>

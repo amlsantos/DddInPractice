@@ -6,9 +6,10 @@ using Persistence;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using UI.Common;
 using UI.Configurations;
 using UI.Services;
+using UI.ViewModels;
+using UI.Views;
 
 namespace UI;
 
@@ -40,13 +41,7 @@ public partial class App : Application
 
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(serverOptions?.SqlServer));
 
-        var machine = new SnackMachine();
-        machine.InsertMoney(Money.Dollar);
-        machine.InsertMoney(Money.FiveDollar);
-        machine.InsertMoney(Money.TwentyDollar);
-        
-        services.AddSingleton(machine);
-        
+        services.AddSingleton<SnackMachine>();
         services.AddScoped<MainWindow>();
         services.AddScoped<MainViewModel>();
         services.AddScoped<IDialogService, DialogService>();
