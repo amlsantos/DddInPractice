@@ -5,13 +5,13 @@ namespace UI.Common;
 
 public abstract class Command<T> : ICommand
 {
-    private readonly Func<T, bool> canExecute;
-    private readonly Action<T> execute;
+    private readonly Func<T, bool> _canExecute;
+    private readonly Action<T> _execute;
 
     protected Command(Func<T, bool> canExecute, Action<T> execute)
     {
-        this.execute = execute;
-        this.canExecute = canExecute;
+        _execute = execute;
+        _canExecute = canExecute;
     }
     
     public event EventHandler? CanExecuteChanged
@@ -25,10 +25,10 @@ public abstract class Command<T> : ICommand
         if (parameter == null && typeof(T).IsValueType)
             return false;
 
-        return canExecute((T)parameter);
+        return _canExecute((T)parameter);
     }
 
-    public void Execute(object parameter) => execute((T)parameter);
+    public void Execute(object parameter) => _execute((T)parameter);
 }
 
 public class Command : Command<object>
