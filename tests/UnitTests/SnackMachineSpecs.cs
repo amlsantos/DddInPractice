@@ -7,6 +7,8 @@ namespace UnitTests;
 
 public class SnackMachineSpecs
 {
+    private readonly TemporaryTests _temporaryTests = new TemporaryTests();
+
     [Fact]
     public void Return_money_empties_money_in_transaction()
     {

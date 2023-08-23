@@ -1,21 +1,15 @@
 ﻿namespace Logic;
 
-using static Logic.Money;
+using static Money;
 
 public sealed class SnackMachine : Entity
 {
-    public Money MoneyInside { get; private set; } /* This money belongs to the machine */
-    public Money MoneyInTransaction { get; private set; } /* This money represents the current transaction */
-
-    public SnackMachine()
-    {
-        MoneyInside = None;
-        MoneyInTransaction = None;
-    }
+    public Money MoneyInside { get; private set; } = None; /* This money belongs to the machine */
+    public Money MoneyInTransaction { get; private set; } = None; /* This money represents the current transaction */
 
     public void InsertMoney(Money money)
     {
-        var coinsAndNotes = new Money[] { Cent, TenCent, Quarter, Dollar, FiveDollar, TwentyDollar };
+        var coinsAndNotes = new[] { Cent, TenCent, Quarter, Dollar, FiveDollar, TwentyDollar };
         if (!coinsAndNotes.Contains(money))
             throw new InvalidOperationException();
 

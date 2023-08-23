@@ -9,9 +9,9 @@ public class SnackMachineViewModel : ViewModel
     private readonly SnackMachine _snackMachine;
 
     public override string Caption => "Snack Machine";
-    public string MoneyInTransaction => _snackMachine.MoneyInTransaction.Amount.ToString();
-    public string MoneyInside => (_snackMachine.MoneyInside + _snackMachine.MoneyInTransaction).Amount.ToString();
-    
+    public string MoneyInTransaction => _snackMachine.MoneyInTransaction.ToString();
+    public Money MoneyInside => (_snackMachine.MoneyInside + _snackMachine.MoneyInTransaction);
+
     public string Message
     {
         get => _message;
@@ -45,20 +45,10 @@ public class SnackMachineViewModel : ViewModel
         BuySnackCommand = new Command(() => BuySnack());
     }
 
-    private void BuySnack()
+    private void InsertMoney(Money coinOrNote)
     {
-        _snackMachine.BuySnack();
-        
-        // db context
-        
-        // using (ISession session = SessionFactory.OpenSession())
-        // using (ITransaction transaction = session.BeginTransaction())
-        // {
-        //     session.SaveOrUpdate(_snackMachine);
-        //     transaction.Commit();
-        // }
-
-        NotifyClient("You have bought a snack");
+        _snackMachine.InsertMoney(coinOrNote);
+        NotifyClient("You have inserted: " + coinOrNote);
     }
 
     private void ReturnMoney()
@@ -67,10 +57,20 @@ public class SnackMachineViewModel : ViewModel
         NotifyClient("Money was returned");
     }
 
-    private void InsertMoney(Money coinOrNote)
+    private void BuySnack()
     {
-        _snackMachine.InsertMoney(coinOrNote);
-        NotifyClient("You have inserted: " + coinOrNote);
+        _snackMachine.BuySnack();
+
+        // db context
+
+        // using (ISession session = SessionFactory.OpenSession())
+        // using (ITransaction transaction = session.BeginTransaction())
+        // {
+        //     session.SaveOrUpdate(_snackMachine);
+        //     transaction.Commit();
+        // }
+
+        NotifyClient("You have bought a snack");
     }
 
     private void NotifyClient(string message)

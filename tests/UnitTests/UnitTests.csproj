@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Logic\Logic.csproj" />
+    <ProjectReference Include="..\..\src\Persistence\Persistence.csproj" />
   </ItemGroup>
 
 </Project>

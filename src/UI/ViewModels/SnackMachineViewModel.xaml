@@ -74,7 +74,7 @@
                            Margin="10 30 30 0" />
 
                     <Image Source="{StaticResource img25Cent}" Width="100" />
-                    <Label Content="{Binding MoneyInside.QuarterCount}" FontSize="20" FontWeight="Bold"
+                    <Label Content="{Binding MoneyInside.QuarterCentCount}" FontSize="20" FontWeight="Bold"
                            Margin="10 30 30 0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
