@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Logic;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Xunit;
@@ -7,19 +8,43 @@ namespace UnitTests;
 
 public class TemporaryTests
 {
-    [Fact]
-    public async Task Test()
+    private readonly ApplicationDbContext _dbContext;
+    
+    public TemporaryTests()
     {
-        // arrange
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer("Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=DddInPractice")
             .Options;
-        var context = new ApplicationDbContext(options);
+        _dbContext = new ApplicationDbContext(options);
+    }
+    
+    [Fact]
+    public async Task ExistingSnack_ShouldBeReturnedFromDatabase()
+    {
+        // arrange
+        // act
+        var existingSnackMachine = await _dbContext.SnackMachines.FirstOrDefaultAsync();
+
+        // assert
+        existingSnackMachine.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async Task NewSnack_ShowBePersisted()
+    {
+        // arrange
+        var snackMachine = new SnackMachine();
+        snackMachine.InsertMoney(Money.Quarter);
+        snackMachine.InsertMoney(Money.TenCent);
+        snackMachine.InsertMoney(Money.TwentyDollar);
+        
+        snackMachine.BuySnack();
         
         // act
-        var snackMachine = await context.SnackMachines.FirstOrDefaultAsync();
-        
+        _dbContext.SnackMachines.Add(snackMachine);
+        var result = await _dbContext.SaveChangesAsync();
+
         // assert
-        snackMachine.Should().NotBeNull();
+        result.Should().Be(1);
     }
 }

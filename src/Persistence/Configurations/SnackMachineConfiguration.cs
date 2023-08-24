@@ -9,8 +9,10 @@ public class SnackMachineConfiguration :IEntityTypeConfiguration<SnackMachine>
     public void Configure(EntityTypeBuilder<SnackMachine> entity)
     {
         entity.ToTable("SnackMachine", "dbo");
-        entity.Property(e => e.Id).HasColumnName("SnackMachineID");
 
+        entity.HasKey(e => e.Id);
+        entity.Property(e => e.Id).HasColumnName("SnackMachineID");
+        
         var moneyInside = entity.OwnsOne<Money>(e => e.MoneyInside);
         moneyInside.Property(e => e.OneCentCount).HasColumnName("OneCentCount");
         moneyInside.Property(e => e.TenCentCount).HasColumnName("TenCentCount");

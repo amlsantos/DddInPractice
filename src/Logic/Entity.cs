@@ -2,8 +2,8 @@
 
 public abstract class Entity
 {
-    public long Id { get; private set; }
-
+    public long Id { get; }
+    
     public override bool Equals(object obj)
     {
         var other = obj as Entity;

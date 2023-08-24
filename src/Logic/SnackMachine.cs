@@ -6,7 +6,7 @@ public sealed class SnackMachine : Entity
 {
     public Money MoneyInside { get; private set; } = None; /* This money belongs to the machine */
     public Money MoneyInTransaction { get; private set; } = None; /* This money represents the current transaction */
-
+    
     public void InsertMoney(Money money)
     {
         var coinsAndNotes = new[] { Cent, TenCent, Quarter, Dollar, FiveDollar, TwentyDollar };
