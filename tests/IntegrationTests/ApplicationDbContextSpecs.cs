@@ -1,17 +1,16 @@
 ﻿using FluentAssertions;
-using Logic;
 using Logic.Domain;
 using Logic.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace UnitTests;
+namespace IntegrationTests;
 
-public class TemporaryTests
+public class ApplicationDbContextSpecs
 {
     private readonly ApplicationDbContext _dbContext;
     
-    public TemporaryTests()
+    public ApplicationDbContextSpecs()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer("Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=DddInPractice")
@@ -47,5 +46,12 @@ public class TemporaryTests
 
         // assert
         result.Should().Be(1);
+        await Clear(snackMachine);
+    }
+
+    private async Task Clear(SnackMachine snackMachine)
+    {
+        _dbContext.SnackMachines.Remove(snackMachine);
+        await _dbContext.SaveChangesAsync();
     }
 }
