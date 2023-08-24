@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using Logic;
+using Logic.Domain;
+using Logic.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
 using Xunit;
 
 namespace UnitTests;

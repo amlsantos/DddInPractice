@@ -1,8 +1,8 @@
-﻿using Logic;
+﻿using System.Reflection;
+using Logic.Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
-namespace Persistence;
+namespace Logic.Persistence;
 
 public class ApplicationDbContext : DbContext
 {

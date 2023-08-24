@@ -1,4 +1,4 @@
-﻿namespace Logic;
+﻿namespace Logic.Domain;
 
 public abstract class Entity
 {

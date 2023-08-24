@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using Logic;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
 using System.Windows;
+using Logic.Domain;
+using Logic.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using UI.Configurations;
@@ -42,9 +42,6 @@ public partial class App : Application
         // persistence
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(serverOptions?.SqlServer));
         
-        // domain
-        services.AddSingleton<SnackMachine>();
-        
         // services
         services.AddScoped<IDialogService, DialogService>();
         
@@ -54,7 +51,6 @@ public partial class App : Application
         
         // view models
         services.AddScoped<MainViewModel>();
-        services.AddScoped<SnackMachineViewModel>();
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

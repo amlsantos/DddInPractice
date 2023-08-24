@@ -14,10 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Persistence\Persistence.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Page Update="Views\MainWindow.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		  <XamlRuntime>Wpf</XamlRuntime>
@@ -60,5 +56,9 @@
 	  <Resource Include="Resources\Images\Soda.png" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Logic\Logic.csproj" />
+	</ItemGroup>
 
 </Project>

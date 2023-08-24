@@ -1,17 +1,20 @@
 ﻿using Logic;
+using Logic.Domain;
+using Logic.Persistence;
 using UI.Common;
 
 namespace UI.ViewModels;
 
 public class SnackMachineViewModel : ViewModel
 {
-    private string _message = "";
     private readonly SnackMachine _snackMachine;
+    private readonly ApplicationDbContext _context;
 
     public override string Caption => "Snack Machine";
     public string MoneyInTransaction => _snackMachine.MoneyInTransaction.ToString();
     public Money MoneyInside => (_snackMachine.MoneyInside + _snackMachine.MoneyInTransaction);
 
+    private string _message = "";
     public string Message
     {
         get => _message;
@@ -31,9 +34,10 @@ public class SnackMachineViewModel : ViewModel
     public Command ReturnMoneyCommand { get; private set; }
     public Command BuySnackCommand { get; private set; }
 
-    public SnackMachineViewModel(SnackMachine snackMachine)
+    public SnackMachineViewModel(SnackMachine snackMachine, ApplicationDbContext context)
     {
         _snackMachine = snackMachine;
+        _context = context;
 
         InsertCentCommand = new Command(() => InsertMoney(Money.Cent));
         InsertTenCentCommand = new Command(() => InsertMoney(Money.TenCent));
@@ -60,15 +64,7 @@ public class SnackMachineViewModel : ViewModel
     private void BuySnack()
     {
         _snackMachine.BuySnack();
-
-        // db context
-
-        // using (ISession session = SessionFactory.OpenSession())
-        // using (ITransaction transaction = session.BeginTransaction())
-        // {
-        //     session.SaveOrUpdate(_snackMachine);
-        //     transaction.Commit();
-        // }
+        _context.SaveChanges();
 
         NotifyClient("You have bought a snack");
     }

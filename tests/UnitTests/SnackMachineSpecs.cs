@@ -1,14 +1,13 @@
 ﻿using FluentAssertions;
 using Logic;
+using Logic.Domain;
 using Xunit;
-using static Logic.Money;
+using static Logic.Domain.Money;
 
 namespace UnitTests;
 
 public class SnackMachineSpecs
 {
-    private readonly TemporaryTests _temporaryTests = new TemporaryTests();
-
     [Fact]
     public void Return_money_empties_money_in_transaction()
     {

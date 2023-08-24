@@ -1,4 +1,4 @@
-﻿namespace Logic;
+﻿namespace Logic.Domain;
 
 public sealed class Money : ValueObject<Money>
 {

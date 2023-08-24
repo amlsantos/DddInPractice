@@ -1,4 +1,4 @@
-﻿namespace Logic;
+﻿namespace Logic.Domain;
 
 public class Snack : Entity
 {
