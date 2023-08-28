@@ -36,14 +36,14 @@ public sealed class SnackMachine : AggregateRoot
 
     public void BuySnack(int position)
     {
-        // decrease the quantity
         var slot = GetSlot(position);
         if (!InsertedMoneySufficient(slot))
             throw new InvalidOperationException();
         
         slot.DecreaseQuantity();
 
-        var change = MoneyInside.Allocate(MoneyInTransaction - slot.SnackPile.Price);
+        // we try to retain small coins and notes
+        var change = MoneyInside.Allocate(MoneyInTransaction - slot.ProductPrice());
         if (!EnoughChange(change, slot))
             throw new InvalidOperationException();
 

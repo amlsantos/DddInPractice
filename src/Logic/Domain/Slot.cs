@@ -20,4 +20,6 @@ public class Slot : Entity
     public void LoadSnack(SnackPile snackPile) => SnackPile = snackPile;
 
     public void DecreaseQuantity() => SnackPile = SnackPile.SubtractOne();
+
+    public decimal ProductPrice() => SnackPile.Price;
 }
