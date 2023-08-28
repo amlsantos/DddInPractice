@@ -1,6 +1,10 @@
-﻿namespace Logic.Domain;
+﻿using Logic.Domain.Common;
 
-public class Snack : Entity
+namespace Logic.Domain;
+
+public class Snack : AggregateRoot
 {
-    public string Name { get; set; }
+    public string Name { get; protected set; }
+
+    public Snack(string name) => Name = name;
 }

@@ -1,4 +1,5 @@
-﻿using Logic;
+﻿using System.Globalization;
+using Logic;
 using Logic.Domain;
 using Logic.Persistence;
 using UI.Common;
@@ -11,8 +12,8 @@ public class SnackMachineViewModel : ViewModel
     private readonly ApplicationDbContext _context;
 
     public override string Caption => "Snack Machine";
-    public string MoneyInTransaction => _snackMachine.MoneyInTransaction.ToString();
-    public Money MoneyInside => (_snackMachine.MoneyInside + _snackMachine.MoneyInTransaction);
+    public string MoneyInTransaction => _snackMachine.MoneyInTransaction.ToString(CultureInfo.InvariantCulture);
+    public Money MoneyInside => _snackMachine.MoneyInside;
 
     private string _message = "";
     public string Message
@@ -63,7 +64,7 @@ public class SnackMachineViewModel : ViewModel
 
     private void BuySnack()
     {
-        _snackMachine.BuySnack();
+        _snackMachine.BuySnack(position:1);
         _context.SaveChanges();
 
         NotifyClient("You have bought a snack");
