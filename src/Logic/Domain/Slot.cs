@@ -14,7 +14,7 @@ public class Slot : Entity
         SnackMachineId = snackMachine?.Id ?? 0;
         SnackMachine = snackMachine;
         Position = position;
-        SnackPile = new SnackPile(null, 0, 0m);
+        SnackPile = SnackPile.Empty;
     }
 
     public void LoadSnack(SnackPile snackPile) => SnackPile = snackPile;

@@ -34,9 +34,9 @@ public sealed class SnackMachine : AggregateRoot
 
     public void LoadMoney(Money money) => MoneyInside = money;
 
-    public void BuySnack(int position)
+    public void BuySnack(int slotPosition)
     {
-        var slot = GetSlot(position);
+        var slot = GetSlot(slotPosition);
         if (!InsertedMoneySufficient(slot))
             throw new InvalidOperationException();
         
@@ -51,9 +51,9 @@ public sealed class SnackMachine : AggregateRoot
         MoneyInTransaction = 0;
     }
 
-    private bool InsertedMoneySufficient(Slot slot) => slot.SnackPile.Price <= MoneyInTransaction;
+    private bool InsertedMoneySufficient(Slot slot) => MoneyInTransaction >= slot.ProductPrice();
 
-    private bool EnoughChange(Money change, Slot slot) => change.Amount >= MoneyInTransaction - slot.SnackPile.Price;
+    private bool EnoughChange(Money change, Slot slot) => change.Amount >= MoneyInTransaction - slot.ProductPrice();
 
     public void ReturnMoney()
     {
@@ -72,5 +72,5 @@ public sealed class SnackMachine : AggregateRoot
         slot.LoadSnack(snackPile);
     }
 
-    private Slot GetSlot(int position) => Slots.Single(s => s.Position == position);
+    private Slot GetSlot(int slotPosition) => Slots.Single(s => s.Position == slotPosition);
 }

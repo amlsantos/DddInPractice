@@ -54,7 +54,7 @@ public class SnackMachineSpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        var chocolate = new Snack("chocolate");
+        var chocolate = Snack.Chocolate;
 
         const int initialQuantity = 10;
         const decimal price = 1m;
@@ -92,7 +92,7 @@ public class SnackMachineSpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(position: 1, new SnackPile(new Snack("chocolate"), 1, 2m));
+        snackMachine.LoadSnacks(position: 1, new SnackPile(Snack.Chocolate, 1, 2m));
         snackMachine.InsertMoney(Dollar);
         
         // act
@@ -128,7 +128,7 @@ public class SnackMachineSpecs
         // arrange
         var snackMachine = new SnackMachine();
         
-        snackMachine.LoadSnacks(1, new SnackPile(new Snack("chocolate"), 1, 0.5m));
+        snackMachine.LoadSnacks(1, new SnackPile(Snack.Chocolate, 1, 0.5m));
         snackMachine.LoadMoney(TenCent * 10);
         snackMachine.InsertMoney(Dollar);
         
@@ -145,7 +145,7 @@ public class SnackMachineSpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(1, new SnackPile(new Snack("chocolate"), 1, 0.5m));
+        snackMachine.LoadSnacks(1, new SnackPile(Snack.Chocolate, 1, 0.5m));
         snackMachine.InsertMoney(Dollar);
 
         // act

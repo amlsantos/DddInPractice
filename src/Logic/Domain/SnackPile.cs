@@ -4,6 +4,8 @@ namespace Logic.Domain;
 
 public class SnackPile : ValueObject<SnackPile>
 {
+    public static readonly SnackPile Empty = new SnackPile(Snack.None, 0, 0m);
+    
     protected long SnackId { get; set; }
     public Snack Snack { get; }
     public int Quantity { get; }

@@ -64,7 +64,7 @@ public class SnackMachineViewModel : ViewModel
 
     private void BuySnack()
     {
-        _snackMachine.BuySnack(position:1);
+        _snackMachine.BuySnack(slotPosition:1);
         _context.SaveChanges();
 
         NotifyClient("You have bought a snack");
