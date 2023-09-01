@@ -2,8 +2,8 @@
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
-using Logic.Domain;
 using Logic.Persistence;
+using Logic.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using UI.Configurations;
@@ -44,6 +44,8 @@ public partial class App : Application
         
         // services
         services.AddScoped<IDialogService, DialogService>();
+        services.AddScoped<SnackMachineRepository>();
+        services.AddScoped<SnackRepository>();
         
         // views
         services.AddScoped<MainWindow>();

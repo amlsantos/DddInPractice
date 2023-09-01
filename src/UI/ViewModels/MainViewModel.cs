@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Logic.Persistence;
+﻿using Logic.Persistence.Repositories;
 using UI.Services;
 
 namespace UI.ViewModels;
@@ -7,15 +6,15 @@ namespace UI.ViewModels;
 public class MainViewModel : ViewModel
 {
     private readonly IDialogService _dialogService;
-    private readonly ApplicationDbContext _context;
+    private readonly SnackMachineRepository _repository;
 
-    public MainViewModel(IDialogService dialogService, ApplicationDbContext context)
+    public MainViewModel(IDialogService dialogService, SnackMachineRepository repository)
     {
         _dialogService = dialogService;
-        _context = context;
+        _repository = repository;
 
-        var snackMachine = _context.SnackMachines.FirstOrDefault();
-        var viewModel = new SnackMachineViewModel(snackMachine, context);
+        var snackMachine = _repository.GetById(1);
+        var viewModel = new SnackMachineViewModel(snackMachine, repository);
 
         _dialogService.ShowDialog(viewModel);
     }

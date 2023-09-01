@@ -127,11 +127,13 @@ GO
 -- Enable IDENTITY_INSERT for the Snack table
 SET IDENTITY_INSERT [dbo].[Snack] ON;
 GO
-INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (1, N'Chocolate')
+INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (1, N'None')
 GO
-INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (2, N'Soda')
+INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (2, N'Chocolate')
 GO
-INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (3, N'Gum')
+INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (3, N'Soda')
+GO
+INSERT [dbo].[Snack] ([SnackID], [Name]) VALUES (4, N'Gum')
 SET IDENTITY_INSERT [dbo].[Snack] OFF;
 
 SET IDENTITY_INSERT [dbo].[Slot] ON;

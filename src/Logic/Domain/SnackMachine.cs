@@ -6,22 +6,11 @@ using static Money;
 
 public sealed class SnackMachine : AggregateRoot
 {
-    public Money MoneyInside { get; private set; }
-    public decimal MoneyInTransaction { get; private set; }
-    protected IList<Slot> Slots { get; }
+    public const int MaxNumberSlots = 3;
+    public Money MoneyInside { get; private set; } = None;
+    public decimal MoneyInTransaction { get; private set; } = None.Amount;
+    public IList<Slot> Slots { get; } = new List<Slot>(MaxNumberSlots);
 
-    public SnackMachine()
-    {
-        MoneyInside = None;
-        MoneyInTransaction = 0;
-        Slots = new List<Slot>()
-        {
-            new(this, position:1),
-            new(this, position:2),
-            new(this, position:3),
-        };
-    }
-    
     public void InsertMoney(Money money)
     {
         var coinsAndNotes = new[] { Cent, TenCent, Quarter, Dollar, FiveDollar, TwentyDollar };
@@ -32,45 +21,79 @@ public sealed class SnackMachine : AggregateRoot
         MoneyInside += money;
     }
 
-    public void LoadMoney(Money money) => MoneyInside = money;
+    public void LoadMoney(Money money) => MoneyInside += money;
 
-    public void BuySnack(int slotPosition)
+    public string CanBuySnack(int position)
     {
-        var slot = GetSlot(slotPosition);
-        if (!InsertedMoneySufficient(slot))
+        var snackPile = GetSnackPile(position);
+        if (snackPile.Quantity == 0)
+            return "The snack pile is empty";
+
+        if (MoneyInTransaction < snackPile.Price)
+            return "Not enough money";
+
+        if (!MoneyInside.CanAllocate(MoneyInTransaction - snackPile.Price))
+            return "Not enough change";
+
+        return string.Empty;
+    }
+    
+    public void BuySnack(int position)
+    {
+        if (CanBuySnack(position) != string.Empty)
             throw new InvalidOperationException();
         
-        slot.DecreaseQuantity();
+        var slot = GetSlot(position);
+        slot.DecreaseProductQuantity();
 
         // we try to retain small coins and notes
-        var change = MoneyInside.Allocate(MoneyInTransaction - slot.ProductPrice());
-        if (!EnoughChange(change, slot))
-            throw new InvalidOperationException();
-
+        var moneyToReturn = MoneyInTransaction - slot.ProductPrice();
+        var change = MoneyInside.Allocate(moneyToReturn);
+        
         MoneyInside -= change;
         MoneyInTransaction = 0;
     }
-
-    private bool InsertedMoneySufficient(Slot slot) => MoneyInTransaction >= slot.ProductPrice();
-
-    private bool EnoughChange(Money change, Slot slot) => change.Amount >= MoneyInTransaction - slot.ProductPrice();
 
     public void ReturnMoney()
     {
         // we try to retain small coins and notes
         var moneyToReturn = MoneyInside.Allocate(MoneyInTransaction);
-        
+
         MoneyInside -= moneyToReturn;
         MoneyInTransaction = 0;
     }
 
     public SnackPile GetSnackPile(int position) => GetSlot(position).SnackPile;
+    
+    public IReadOnlyList<SnackPile> GetAllSnackPiles()
+    {
+        return Slots
+            .OrderBy(x => x.Position)
+            .Select(x => x.SnackPile)
+            .ToList();
+    }
 
     public void LoadSnacks(int position, SnackPile snackPile)
     {
-        var slot = GetSlot(position);
+        ValidateSlotPosition(position);
+        
+        var slot = new Slot(this, position);
         slot.LoadSnack(snackPile);
+
+        Slots.Add(slot);
     }
 
-    private Slot GetSlot(int slotPosition) => Slots.Single(s => s.Position == slotPosition);
+    private Slot GetSlot(int position)
+    {
+        ValidateSlotPosition(position);
+
+        return Slots.Single(s => s.Position == position);
+    }
+
+    private void ValidateSlotPosition(int position)
+    {
+        var validSlotPositions = Enumerable.Range(1, MaxNumberSlots).ToArray();
+        if (!validSlotPositions.Contains(position))
+            throw new InvalidOperationException();
+    }
 }

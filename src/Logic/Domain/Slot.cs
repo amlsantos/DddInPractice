@@ -4,22 +4,23 @@ namespace Logic.Domain;
 
 public class Slot : Entity
 {
-    public long SnackMachineId { get; protected set; }
-    public SnackMachine SnackMachine { get; protected set; }
-    public SnackPile SnackPile { get; protected set; }
+    public long SnackMachineId { get; }
+    public virtual SnackMachine SnackMachine { get; }
     public int Position { get; protected set; }
-    
-    public Slot(SnackMachine snackMachine, int position)
+    public SnackPile SnackPile { get; protected set; }
+
+    private Slot() => SnackPile = SnackPile.Empty;
+
+    public Slot(SnackMachine snackMachine, int position) : this()
     {
         SnackMachineId = snackMachine?.Id ?? 0;
         SnackMachine = snackMachine;
         Position = position;
-        SnackPile = SnackPile.Empty;
     }
 
     public void LoadSnack(SnackPile snackPile) => SnackPile = snackPile;
 
-    public void DecreaseQuantity() => SnackPile = SnackPile.SubtractOne();
+    public void DecreaseProductQuantity() => SnackPile = SnackPile.SubtractOne();
 
     public decimal ProductPrice() => SnackPile.Price;
 }

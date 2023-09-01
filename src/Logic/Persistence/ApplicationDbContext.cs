@@ -7,6 +7,7 @@ namespace Logic.Persistence;
 public class ApplicationDbContext : DbContext
 {
     public DbSet<Snack> Snacks { get; set; }
+    public DbSet<Slot> Slots { get; set; }
     public DbSet<SnackMachine> SnackMachines { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

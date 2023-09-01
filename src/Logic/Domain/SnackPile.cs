@@ -4,14 +4,16 @@ namespace Logic.Domain;
 
 public class SnackPile : ValueObject<SnackPile>
 {
-    public static readonly SnackPile Empty = new SnackPile(Snack.None, 0, 0m);
+    public static readonly SnackPile Empty = new(Snack.None, 0, 0m);
     
-    protected long SnackId { get; set; }
-    public Snack Snack { get; }
+    public long SnackId { get; init; }
+    public virtual Snack Snack { get; }
     public int Quantity { get; }
     public decimal Price { get; }
+
+    private SnackPile() { }
     
-    public SnackPile(Snack snack, int quantity, decimal price)
+    public SnackPile(Snack snack, int? quantity, decimal? price) : this()
     {
         if (quantity < 0)
             throw new InvalidOperationException();
@@ -22,13 +24,16 @@ public class SnackPile : ValueObject<SnackPile>
         
         SnackId = snack?.Id ?? 0;
         Snack = snack;
-        Quantity = quantity;
-        Price = price;
+        Quantity = quantity ?? 0;
+        Price = price ?? 0;
     }
 
     public SnackPile SubtractOne() => new(Snack, Quantity - 1, Price);
 
-    protected override bool EqualsCore(SnackPile other) => Snack == other.Snack && Quantity == other.Quantity && Price == other.Quantity;
+    protected override bool EqualsCore(SnackPile other) => 
+        Snack == other.Snack && 
+        Quantity == other.Quantity && 
+        Price == other.Quantity;
 
     protected override int GetHashCodeCore()
     {

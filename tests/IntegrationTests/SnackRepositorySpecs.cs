@@ -21,10 +21,10 @@ public class SnackRepositorySpecs
         _repository = new SnackRepository(context);
     }
 
-    public static TheoryData<Snack> SnacksTypes => new() { Snack.Chocolate, Snack.Gum, Snack.Soda };
+    public static TheoryData<Snack> Snacks => new() { Snack.Chocolate, Snack.Gum, Snack.Soda, Snack.None };
     
     [Theory]
-    [MemberData(nameof(SnacksTypes))]
+    [MemberData(nameof(Snacks))]
     public void Reference_data_is_correct(Snack snack)
     {
         // arrange

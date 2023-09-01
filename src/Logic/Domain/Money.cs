@@ -129,7 +129,7 @@ public sealed class Money : ValueObject<Money>
             return AllocateCore(amount);
         }
 
-        private bool CanAllocate(decimal amount)
+        public bool CanAllocate(decimal amount)
         {
             var money = AllocateCore(amount);
             return money.Amount == amount;

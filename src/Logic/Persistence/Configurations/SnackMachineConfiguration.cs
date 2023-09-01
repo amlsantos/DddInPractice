@@ -22,5 +22,10 @@ public class SnackMachineConfiguration :IEntityTypeConfiguration<SnackMachine>
         moneyInside.Property(e => e.TwentyDollarCount).HasColumnName("TwentyDollarCount");
         
         entity.Ignore(e => e.MoneyInTransaction);
+
+        entity.HasMany(e => e.Slots)
+            .WithOne(s => s.SnackMachine)
+            .HasForeignKey(e => e.SnackMachineId)
+            .HasConstraintName("SnackMachineID");
     }
 }

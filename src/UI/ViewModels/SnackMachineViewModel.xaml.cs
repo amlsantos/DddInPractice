@@ -1,7 +1,8 @@
-﻿using System.Globalization;
-using Logic;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Logic.Domain;
-using Logic.Persistence;
+using Logic.Persistence.Repositories;
 using UI.Common;
 
 namespace UI.ViewModels;
@@ -9,13 +10,16 @@ namespace UI.ViewModels;
 public class SnackMachineViewModel : ViewModel
 {
     private readonly SnackMachine _snackMachine;
-    private readonly ApplicationDbContext _context;
+    private readonly SnackMachineRepository _repository;
 
     public override string Caption => "Snack Machine";
     public string MoneyInTransaction => _snackMachine.MoneyInTransaction.ToString(CultureInfo.InvariantCulture);
     public Money MoneyInside => _snackMachine.MoneyInside;
 
+    public IReadOnlyList<SnackPileViewModel> Piles => GetPiles();
+
     private string _message = "";
+
     public string Message
     {
         get => _message;
@@ -33,12 +37,12 @@ public class SnackMachineViewModel : ViewModel
     public Command InsertFiveDollarCommand { get; private set; }
     public Command InsertTwentyDollarCommand { get; private set; }
     public Command ReturnMoneyCommand { get; private set; }
-    public Command BuySnackCommand { get; private set; }
+    public Command<string> BuySnackCommand { get; private set; }
 
-    public SnackMachineViewModel(SnackMachine snackMachine, ApplicationDbContext context)
+    public SnackMachineViewModel(SnackMachine snackMachine, SnackMachineRepository repository)
     {
         _snackMachine = snackMachine;
-        _context = context;
+        _repository = repository;
 
         InsertCentCommand = new Command(() => InsertMoney(Money.Cent));
         InsertTenCentCommand = new Command(() => InsertMoney(Money.TenCent));
@@ -46,8 +50,15 @@ public class SnackMachineViewModel : ViewModel
         InsertDollarCommand = new Command(() => InsertMoney(Money.Dollar));
         InsertFiveDollarCommand = new Command(() => InsertMoney(Money.FiveDollar));
         InsertTwentyDollarCommand = new Command(() => InsertMoney(Money.TwentyDollar));
-        ReturnMoneyCommand = new Command(() => ReturnMoney());
-        BuySnackCommand = new Command(() => BuySnack());
+        ReturnMoneyCommand = new Command(ReturnMoney);
+        BuySnackCommand = new Command<string>(BuySnack);
+    }
+
+    private List<SnackPileViewModel> GetPiles()
+    {
+        return _snackMachine.GetAllSnackPiles()
+            .Select(x => new SnackPileViewModel(x))
+            .ToList();
     }
 
     private void InsertMoney(Money coinOrNote)
@@ -62,11 +73,19 @@ public class SnackMachineViewModel : ViewModel
         NotifyClient("Money was returned");
     }
 
-    private void BuySnack()
+    private void BuySnack(string positionString)
     {
-        _snackMachine.BuySnack(slotPosition:1);
-        _context.SaveChanges();
+        var position = int.Parse(positionString);
+        var error = _snackMachine.CanBuySnack(position);
+        if (error != string.Empty)
+        {
+            NotifyClient(error);
+            return;
+        }
 
+        _snackMachine.BuySnack(position);
+        _repository.Save();
+        
         NotifyClient("You have bought a snack");
     }
 
@@ -75,5 +94,6 @@ public class SnackMachineViewModel : ViewModel
         Message = message;
         Notify(nameof(MoneyInTransaction));
         Notify(nameof(MoneyInside));
+        Notify(nameof(Piles));
     }
 }

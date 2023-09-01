@@ -3,37 +3,56 @@ using System.Windows.Input;
 
 namespace UI.Common;
 
-public abstract class Command<T> : ICommand
+public class Command<T> : ICommand
 {
-    private readonly Func<T, bool> _canExecute;
-    private readonly Action<T> _execute;
+    private readonly Func<T, bool> canExecute;
+    private readonly Action<T> execute;
 
-    protected Command(Func<T, bool> canExecute, Action<T> execute)
+    public event EventHandler CanExecuteChanged
     {
-        _execute = execute;
-        _canExecute = canExecute;
+        add { CommandManager.RequerySuggested += value; }
+        remove { CommandManager.RequerySuggested -= value; }
     }
-    
-    public event EventHandler? CanExecuteChanged
+
+
+    public Command(Action<T> execute)
+        : this(_ => true, execute)
     {
-        add => CommandManager.RequerySuggested += value;
-        remove => CommandManager.RequerySuggested -= value;
     }
+
+
+    public Command(Func<T, bool> canExecute, Action<T> execute)
+    {
+        this.execute = execute;
+        this.canExecute = canExecute;
+    }
+
 
     public bool CanExecute(object parameter)
     {
         if (parameter == null && typeof(T).IsValueType)
             return false;
 
-        return _canExecute((T)parameter);
+        return canExecute((T)parameter);
     }
 
-    public void Execute(object parameter) => _execute((T)parameter);
+
+    public void Execute(object parameter)
+    {
+        execute((T)parameter);
+    }
 }
 
 public class Command : Command<object>
 {
-    private Command(Func<bool> canExecute, Action execute) : base(_ => canExecute(), _ => execute()) { }
+    public Command(Func<bool> canExecute, Action execute)
+        : base(_ => canExecute(), _ => execute())
+    {
+    }
 
-    public Command(Action execute) : this(() => true, execute) { }
+
+    public Command(Action execute)
+        : this(() => true, execute)
+    {
+    }
 }
