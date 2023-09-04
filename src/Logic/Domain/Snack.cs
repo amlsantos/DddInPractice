@@ -13,5 +13,5 @@ public class Snack : AggregateRoot
 
     public Snack(string name) => Name = name;
 
-    public Snack(int id, string name) : this(name) => Id = id;
+    private Snack(int id, string name) : this(name) => Id = id;
 }

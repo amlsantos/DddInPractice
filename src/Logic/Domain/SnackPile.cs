@@ -27,7 +27,7 @@ public class SnackPile : ValueObject<SnackPile>
         Quantity = quantity ?? 0;
         Price = price ?? 0;
     }
-
+    
     public SnackPile SubtractOne() => new(Snack, Quantity - 1, Price);
 
     protected override bool EqualsCore(SnackPile other) => 

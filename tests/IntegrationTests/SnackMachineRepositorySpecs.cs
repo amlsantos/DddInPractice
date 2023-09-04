@@ -3,6 +3,7 @@ using Logic.Domain;
 using Logic.Persistence;
 using Logic.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace IntegrationTests;
