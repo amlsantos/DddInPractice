@@ -1,7 +1,11 @@
-﻿using FluentAssertions;
-using Logic.Domain;
+﻿#region
+
+using FluentAssertions;
+using Logic.SnackMachines;
 using Xunit;
-using static Logic.Domain.Money;
+using static Logic.SharedKernel.Money;
+
+#endregion
 
 namespace UnitTests;
 
@@ -61,10 +65,10 @@ public class SnackMachineSpecs
         var snackPile = new SnackPile(chocolate, initialQuantity, price);
 
         const int position = 1;
-        
-        snackMachine.LoadSnacks(position: position, snackPile: snackPile);
+
+        snackMachine.LoadSnacks(position, snackPile);
         snackMachine.InsertMoney(Dollar);
-        
+
         // act
         snackMachine.BuySnack(position);
 
@@ -92,9 +96,9 @@ public class SnackMachineSpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(position: 1, new SnackPile(Snack.Chocolate, 1, 2m));
+        snackMachine.LoadSnacks(1, new SnackPile(Snack.Chocolate, 1, 2m));
         snackMachine.InsertMoney(Dollar);
-        
+
         // act
         var action = () => snackMachine.BuySnack(1);
 
@@ -113,7 +117,7 @@ public class SnackMachineSpecs
         snackMachine.InsertMoney(Quarter);
         snackMachine.InsertMoney(Quarter);
         snackMachine.InsertMoney(Quarter);
-        
+
         // act
         snackMachine.ReturnMoney();
 
@@ -127,14 +131,14 @@ public class SnackMachineSpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        
+
         snackMachine.LoadSnacks(1, new SnackPile(Snack.Chocolate, 1, 0.5m));
         snackMachine.LoadMoney(TenCent * 10);
         snackMachine.InsertMoney(Dollar);
-        
+
         // act
         snackMachine.BuySnack(1);
-        
+
         // assert
         snackMachine.MoneyInside.Amount.Should().Be(1.5m);
         snackMachine.MoneyInTransaction.Should().Be(0m);

@@ -1,10 +1,13 @@
-﻿using FluentAssertions;
-using Logic.Domain;
-using Logic.Persistence;
-using Logic.Persistence.Repositories;
+﻿#region
+
+using FluentAssertions;
+using Logic.Common;
+using Logic.SharedKernel;
+using Logic.SnackMachines;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Xunit;
+
+#endregion
 
 namespace IntegrationTests;
 
@@ -40,20 +43,20 @@ public class SnackMachineRepositorySpecs
     {
         // arrange
         var snackMachine = new SnackMachine();
-        
+
         snackMachine.InsertMoney(Money.Dollar);
         snackMachine.InsertMoney(Money.Dollar);
 
         var soda = _snackRepository.GetById(Snack.Soda.Id);
         var chocolate = _snackRepository.GetById(Snack.Chocolate.Id);
         var gum = _snackRepository.GetById(Snack.Gum.Id);
-        
-        snackMachine.LoadSnacks(position: 1, new SnackPile(soda, 50, 1m));
-        snackMachine.LoadSnacks(position: 2, new SnackPile(chocolate, 20, 2m));
-        snackMachine.LoadSnacks(position: 3, new SnackPile(gum, 30, 1.5m));
-        
-        snackMachine.BuySnack(position:1);
-        
+
+        snackMachine.LoadSnacks(1, new SnackPile(soda, 50, 1m));
+        snackMachine.LoadSnacks(2, new SnackPile(chocolate, 20, 2m));
+        snackMachine.LoadSnacks(3, new SnackPile(gum, 30, 1.5m));
+
+        snackMachine.BuySnack(1);
+
         // act
         _snackMachineRepository.Create(snackMachine);
         var result = _snackMachineRepository.Save();
@@ -75,7 +78,7 @@ public class SnackMachineRepositorySpecs
         // arrange
         // act
         var existingSnackMachine = _snackMachineRepository.GetById(1);
-        
+
         // assert
         existingSnackMachine?.Slots.Count.Should().Be(SnackMachine.MaxNumberSlots);
     }

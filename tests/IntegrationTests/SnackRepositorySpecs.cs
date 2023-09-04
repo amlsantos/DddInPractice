@@ -1,9 +1,12 @@
-﻿using FluentAssertions;
-using Logic.Domain;
-using Logic.Persistence;
-using Logic.Persistence.Repositories;
+﻿#region
+
+using FluentAssertions;
+using Logic.Common;
+using Logic.SnackMachines;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+
+#endregion
 
 namespace IntegrationTests;
 
@@ -22,17 +25,17 @@ public class SnackRepositorySpecs
     }
 
     public static TheoryData<Snack> Snacks => new() { Snack.Chocolate, Snack.Gum, Snack.Soda, Snack.None };
-    
+
     [Theory]
     [MemberData(nameof(Snacks))]
     public void Reference_data_is_correct(Snack snack)
     {
         // arrange
         var id = snack.Id;
-        
+
         // act
         var existingSnack = _repository.GetById(id);
-        
+
         // assert
         existingSnack?.Should().NotBeNull();
         existingSnack?.Id.Should().Be(snack.Id);

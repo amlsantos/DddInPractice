@@ -1,7 +1,10 @@
-﻿using FluentAssertions;
-using Logic;
-using Logic.Domain;
+﻿#region
+
+using FluentAssertions;
+using Logic.SharedKernel;
 using Xunit;
+
+#endregion
 
 namespace UnitTests;
 
@@ -57,10 +60,12 @@ public class MoneySpecs
     [InlineData(0, 0, 0, -4, 0, 0)]
     [InlineData(0, 0, 0, 0, -5, 0)]
     [InlineData(0, 0, 0, 0, 0, -6)]
-    public void Cannot_create_money_with_negative_value(int oneCentCount, int tenCentCount, int quarterCentCount, int oneDollarCount, int fiveDollarCount, int twentyDollarCount)
+    public void Cannot_create_money_with_negative_value(int oneCentCount, int tenCentCount, int quarterCentCount,
+        int oneDollarCount, int fiveDollarCount, int twentyDollarCount)
     {
         // arrange & act
-        var action = () => new Money(oneCentCount, tenCentCount, quarterCentCount, oneDollarCount, fiveDollarCount, twentyDollarCount);
+        var action = () => new Money(oneCentCount, tenCentCount, quarterCentCount, oneDollarCount, fiveDollarCount,
+            twentyDollarCount);
 
         // assert
         action.Should().Throw<InvalidOperationException>();
@@ -76,10 +81,12 @@ public class MoneySpecs
     [InlineData(1, 2, 3, 4, 5, 6, 149.96)]
     [InlineData(11, 0, 0, 0, 0, 0, 0.11)]
     [InlineData(110, 0, 0, 0, 100, 0, 501.1)]
-    public void Amount_is_calculated_correctly(int oneCentCount, int tenCentCount, int quarterCount, int oneDollarCount, int fiveDollarCount, int twentyDollarCount, decimal expectedAmount)
+    public void Amount_is_calculated_correctly(int oneCentCount, int tenCentCount, int quarterCount, int oneDollarCount,
+        int fiveDollarCount, int twentyDollarCount, decimal expectedAmount)
     {
         // arrange & act
-        var money = new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount, twentyDollarCount);
+        var money = new Money(oneCentCount, tenCentCount, quarterCount, oneDollarCount, fiveDollarCount,
+            twentyDollarCount);
 
         // assert
         money.Amount.Should().Be(expectedAmount);
@@ -93,7 +100,7 @@ public class MoneySpecs
         var money2 = new Money(1, 2, 3, 4, 5, 6);
 
         // act
-        Money result = money1 - money2;
+        var result = money1 - money2;
 
         result.OneCentCount.Should().Be(9);
         result.TenCentCount.Should().Be(8);
