@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using Logic.Atms;
 using Logic.Common;
 using Logic.SnackMachines;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,10 @@ public partial class App : Application
 
         // services
         services.AddScoped<IDialogService, DialogService>();
+        services.AddScoped<IPaymentGateway, PaymentGateway>();
+
         services.AddScoped<SnackMachineRepository>();
+        services.AddScoped<AtmRepository>();
         services.AddScoped<SnackRepository>();
 
         // views

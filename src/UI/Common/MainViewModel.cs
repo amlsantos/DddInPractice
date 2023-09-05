@@ -1,7 +1,8 @@
 ﻿#region
 
+using Logic.Atms;
 using Logic.SnackMachines;
-using UI.SnackMachines;
+using UI.Atms;
 using UI.Utils;
 
 #endregion
@@ -10,16 +11,28 @@ namespace UI.Common;
 
 public class MainViewModel : ViewModel
 {
+    private readonly AtmRepository _atmRepository;
     private readonly IDialogService _dialogService;
-    private readonly SnackMachineRepository _repository;
+    private readonly IPaymentGateway _gateway;
+    private readonly SnackMachineRepository _snackMachineRepository;
 
-    public MainViewModel(IDialogService dialogService, SnackMachineRepository repository)
+    public MainViewModel(AtmRepository atmRepository,
+        IDialogService dialogService,
+        IPaymentGateway gateway,
+        SnackMachineRepository snackMachineRepository)
     {
+        _atmRepository = atmRepository;
         _dialogService = dialogService;
-        _repository = repository;
+        _gateway = gateway;
+        _snackMachineRepository = snackMachineRepository;
 
-        var snackMachine = _repository.GetById(1);
-        var viewModel = new SnackMachineViewModel(snackMachine, repository);
+        const int existingEntity = 1;
+
+        // var snackMachine = _snackMachineRepository.GetById(existingEntity);
+        // var viewModel = new SnackMachineViewModel(snackMachine, snackMachineRepository);
+
+        var atm = _atmRepository.GetById(existingEntity);
+        var viewModel = new AtmViewModel(atm, atmRepository, gateway);
 
         _dialogService.ShowDialog(viewModel);
     }
