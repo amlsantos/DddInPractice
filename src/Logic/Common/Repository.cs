@@ -26,22 +26,32 @@ public abstract class Repository<T> : IDisposable where T : AggregateRoot
         return Context.Set<T>().Find(id);
     }
 
+    public virtual void Add(T entity)
+    {
+        Context.Set<T>().Add(entity);
+    }
+
+    public virtual void Remove(T entity)
+    {
+        Context.Set<T>().Remove(entity);
+    }
+
     public int Save()
     {
         // var snacks = Context.ChangeTracker.Entries()
         //     .Where(x => x.Entity is Snack);
-        //
+
         // foreach (var snack in snacks)
         // {
         //     if (IsReferenceData(snack))
         //         snack.State = EntityState.Unchanged;
         // }
-        //
+
         // var snackMachines = Context.ChangeTracker.Entries()
         //     .Where(x => x.Entity is SnackMachine);
 
         // Context.ChangeTracker.DetectChanges();
-        //
+
         var slots = Context.ChangeTracker.Entries()
             .Where(x => x.Entity is Slot);
 

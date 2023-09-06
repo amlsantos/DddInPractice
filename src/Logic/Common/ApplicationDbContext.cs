@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using Logic.Atms;
+using Logic.Management;
 using Logic.SnackMachines;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Snack> Snacks { get; set; }
     public DbSet<Slot> Slots { get; set; }
     public DbSet<Atm> Atms { get; set; }
-
+    public DbSet<HeadOffice> HeadOffices { get; set; }
     public DbSet<SnackMachine> SnackMachines { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

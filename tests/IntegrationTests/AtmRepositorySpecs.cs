@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Logic.Atms;
 using Logic.Common;
-using Logic.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using static Logic.SharedKernel.Money;
 
 namespace IntegrationTests;
 
@@ -25,12 +25,14 @@ public class AtmRepositorySpecs
     public void ExistingAtm_ShouldBeReturnedFromDatabase()
     {
         // arrange
+        const int existingId = 1;
+
         // act
-        var existingAtm = _repository.GetById(1);
+        var existingAtm = _repository.GetById(existingId);
 
         // assert
         existingAtm.Should().NotBeNull();
-        existingAtm?.Id.Should().Be(1);
+        existingAtm?.Id.Should().Be(existingId);
     }
 
     [Fact]
@@ -38,10 +40,13 @@ public class AtmRepositorySpecs
     {
         // arrange
         var atm = new Atm();
-        atm.LoadMoney(Money.FiveDollar * 50);
+        atm.LoadMoney(FiveDollar * 50);
+
+        atm.TakeMoney(FiveDollar.Amount);
+        atm.TakeMoney(TwentyDollar.Amount);
 
         // act
-        _repository.Create(atm);
+        _repository.Add(atm);
         var savedEntities = _repository.Save();
 
         // assert
@@ -53,6 +58,7 @@ public class AtmRepositorySpecs
 
     private void Clear(Atm atm)
     {
-        _repository.Delete(atm);
+        _repository.Remove(atm);
+        _repository.Save();
     }
 }

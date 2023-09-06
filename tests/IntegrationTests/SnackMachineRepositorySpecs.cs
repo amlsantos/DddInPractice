@@ -58,7 +58,7 @@ public class SnackMachineRepositorySpecs
         snackMachine.BuySnack(1);
 
         // act
-        _snackMachineRepository.Create(snackMachine);
+        _snackMachineRepository.Add(snackMachine);
         var result = _snackMachineRepository.Save();
 
         // assert
@@ -68,7 +68,7 @@ public class SnackMachineRepositorySpecs
 
     private void Clear(SnackMachine snackMachine)
     {
-        _snackMachineRepository.Delete(snackMachine);
+        _snackMachineRepository.Remove(snackMachine);
         _snackMachineRepository.Save();
     }
 

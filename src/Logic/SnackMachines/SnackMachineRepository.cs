@@ -23,14 +23,4 @@ public class SnackMachineRepository : Repository<SnackMachine>
 
         return snacks.Single(x => x.Id == id);
     }
-
-    public void Create(SnackMachine snackMachine)
-    {
-        Context.SnackMachines.Add(snackMachine);
-    }
-
-    public void Delete(SnackMachine snackMachine)
-    {
-        Context.SnackMachines.Remove(snackMachine);
-    }
 }
