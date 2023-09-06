@@ -12,8 +12,12 @@ namespace Logic.Common;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    private readonly PublishDomainEventsInterceptor _interceptor;
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+        PublishDomainEventsInterceptor interceptor) : base(options)
     {
+        _interceptor = interceptor;
     }
 
     public DbSet<Snack> Snacks { get; set; }
@@ -26,6 +30,8 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
             throw new InvalidOperationException("Invalid connection string");
+
+        optionsBuilder.AddInterceptors(_interceptor);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

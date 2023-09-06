@@ -5,7 +5,7 @@ namespace Logic.Management;
 
 public class HeadOfficeRepository : Repository<HeadOffice>
 {
-    public HeadOfficeRepository(IMediator mediator, ApplicationDbContext context) : base(mediator, context)
+    public HeadOfficeRepository(IMediator mediator, ApplicationDbContext context) : base(context)
     {
     }
 }

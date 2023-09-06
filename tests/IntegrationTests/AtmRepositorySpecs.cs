@@ -2,7 +2,6 @@
 using Logic.Atms;
 using Logic.Common;
 using Logic.Management;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -20,19 +19,20 @@ public class AtmRepositorySpecs
     {
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
-
         var provider = serviceCollection.BuildServiceProvider();
+
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(ConnectionString)
             .Options;
 
-        _dbContext = new ApplicationDbContext(options);
-        _repository = new AtmRepository(new Mediator(provider), _dbContext);
+        _dbContext = new ApplicationDbContext(options, null);
+        _repository = new AtmRepository(_dbContext);
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<HeadOfficeRepository>();
+        services.AddScoped<PublishDomainEventsInterceptor>();
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();

@@ -1,7 +1,6 @@
 ﻿#region
 
 using Logic.Common;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -10,7 +9,7 @@ namespace Logic.SnackMachines;
 
 public class SnackMachineRepository : Repository<SnackMachine>
 {
-    public SnackMachineRepository(IMediator mediator, ApplicationDbContext context) : base(mediator, context)
+    public SnackMachineRepository(ApplicationDbContext context) : base(context)
     {
     }
 

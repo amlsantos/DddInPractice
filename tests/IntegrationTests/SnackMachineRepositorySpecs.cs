@@ -22,9 +22,9 @@ public class SnackMachineRepositorySpecs
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(ConnectionString)
             .Options;
-        var context = new ApplicationDbContext(options);
-        _snackMachineRepository = new SnackMachineRepository(null, context);
-        _snackRepository = new SnackRepository(null, context);
+        var context = new ApplicationDbContext(options, null);
+        _snackMachineRepository = new SnackMachineRepository(context);
+        _snackRepository = new SnackRepository(context);
     }
 
     [Fact]

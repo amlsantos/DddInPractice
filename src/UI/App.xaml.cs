@@ -46,12 +46,14 @@ public partial class App : Application
             throw new InvalidOperationException("Invalid connection string. Please check your app-settings file");
 
         // persistence
+        services.AddScoped<PublishDomainEventsInterceptor>();
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(serverOptions?.SqlServer));
 
         // services
         services.AddScoped<IDialogService, DialogService>();
         services.AddScoped<IPaymentGateway, PaymentGateway>();
 
+        // repositories
         services.AddScoped<SnackMachineRepository>();
         services.AddScoped<HeadOfficeRepository>();
         services.AddScoped<AtmRepository>();

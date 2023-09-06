@@ -20,8 +20,8 @@ public class SnackRepositorySpecs
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(ConnectionString)
             .Options;
-        var context = new ApplicationDbContext(options);
-        _repository = new SnackRepository(null, context);
+        var context = new ApplicationDbContext(options, null);
+        _repository = new SnackRepository(context);
     }
 
     public static TheoryData<Snack> Snacks => new() { Snack.Chocolate, Snack.Gum, Snack.Soda, Snack.None };

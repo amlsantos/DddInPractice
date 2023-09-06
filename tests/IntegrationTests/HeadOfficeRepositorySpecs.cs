@@ -16,7 +16,7 @@ public class HeadOfficeRepositorySpecs
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(ConnectionString)
             .Options;
-        var context = new ApplicationDbContext(options);
+        var context = new ApplicationDbContext(options, null);
         _repository = new HeadOfficeRepository(null, context);
     }
 

@@ -1,7 +1,6 @@
 ﻿#region
 
 using Logic.SnackMachines;
-using MediatR;
 
 #endregion
 
@@ -9,12 +8,10 @@ namespace Logic.Common;
 
 public abstract class Repository<T> : IDisposable where T : AggregateRoot
 {
-    private readonly IMediator _mediator;
     protected readonly ApplicationDbContext Context;
 
-    public Repository(IMediator mediator, ApplicationDbContext context)
+    public Repository(ApplicationDbContext context)
     {
-        _mediator = mediator;
         Context = context;
     }
 
@@ -41,7 +38,6 @@ public abstract class Repository<T> : IDisposable where T : AggregateRoot
     public async Task<int> SaveChangesAsync()
     {
         ValidateSlots();
-        await DispatchDomainEventsAsync();
 
         return await Context.SaveChangesAsync();
     }
@@ -59,28 +55,5 @@ public abstract class Repository<T> : IDisposable where T : AggregateRoot
             if (snackPile is null)
                 throw new InvalidOperationException();
         }
-    }
-
-    private async Task DispatchDomainEventsAsync()
-    {
-        var entitiesWithDomainEvents = Context.ChangeTracker
-            .Entries<AggregateRoot>()
-            .Where(entry => entry.Entity.DomainEvents.Any())
-            .Select(entry => entry.Entity)
-            .ToList();
-
-        if (entitiesWithDomainEvents.Count == 0)
-            return;
-
-        var domainEvents = entitiesWithDomainEvents
-            .SelectMany(entry => entry.DomainEvents)
-            .ToList();
-
-        // clear domain events
-        entitiesWithDomainEvents.ForEach(entity => entity.ClearEvents());
-
-        // Dispatch
-        foreach (var domainEvent in domainEvents)
-            await _mediator.Publish(domainEvent);
     }
 }
