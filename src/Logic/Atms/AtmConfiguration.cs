@@ -10,7 +10,7 @@ public class AtmConfiguration : IEntityTypeConfiguration<Atm>
     {
         entity.ToTable("Atm", "dbo");
         entity.HasKey(e => e.Id);
-        entity.Property(s => s.Id).HasColumnName("AtmId");
+        entity.Property(e => e.Id).HasColumnName("AtmId");
 
         var moneyInside = entity.OwnsOne<Money>(e => e.MoneyInside);
         moneyInside.Property(e => e.OneCentCount).HasColumnName("OneCentCount");
@@ -21,5 +21,7 @@ public class AtmConfiguration : IEntityTypeConfiguration<Atm>
         moneyInside.Property(e => e.TwentyDollarCount).HasColumnName("TwentyDollarCount");
 
         entity.Property(e => e.MoneyCharged).HasColumnName("MoneyCharged");
+
+        entity.Ignore(e => e.DomainEvents);
     }
 }

@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using Logic.Atms;
 using Logic.Common;
+using Logic.Management;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using static Logic.SharedKernel.Money;
 
@@ -10,15 +13,30 @@ namespace IntegrationTests;
 public class AtmRepositorySpecs
 {
     private const string ConnectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=DddInPractice";
+    private readonly ApplicationDbContext _dbContext;
     private readonly AtmRepository _repository;
 
     public AtmRepositorySpecs()
     {
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+
+        var provider = serviceCollection.BuildServiceProvider();
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseSqlServer(ConnectionString)
             .Options;
-        var context = new ApplicationDbContext(options);
-        _repository = new AtmRepository(context);
+
+        _dbContext = new ApplicationDbContext(options);
+        _repository = new AtmRepository(new Mediator(provider), _dbContext);
+    }
+
+    private void ConfigureServices(IServiceCollection services)
+    {
+        services.AddScoped<HeadOfficeRepository>();
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionString));
+
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
     }
 
     [Fact]
@@ -36,29 +54,29 @@ public class AtmRepositorySpecs
     }
 
     [Fact]
-    public void NewAtm_ShowBePersisted()
+    public async Task NewAtm_ShowBePersisted()
     {
         // arrange
         var atm = new Atm();
-        atm.LoadMoney(FiveDollar * 50);
-
-        atm.TakeMoney(FiveDollar.Amount);
-        atm.TakeMoney(TwentyDollar.Amount);
+        atm.LoadMoney(Dollar);
 
         // act
         _repository.Add(atm);
-        var savedEntities = _repository.Save();
+        var savedEntities = await _repository.SaveChangesAsync();
+
+        atm.TakeMoney(Dollar.Amount);
+        await _repository.SaveChangesAsync();
 
         // assert
         atm.Id.Should().NotBe(0);
         savedEntities.Should().Be(1);
 
-        Clear(atm);
+        await Clear(atm);
     }
 
-    private void Clear(Atm atm)
+    private async Task Clear(Atm atm)
     {
         _repository.Remove(atm);
-        _repository.Save();
+        await _repository.SaveChangesAsync();
     }
 }

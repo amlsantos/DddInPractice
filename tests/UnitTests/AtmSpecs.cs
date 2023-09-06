@@ -49,4 +49,19 @@ public class AtmSpecs
         // assert
         atm.MoneyCharged.Should().Be(1.12m);
     }
+
+    [Fact]
+    public void Take_money_raises_event()
+    {
+        // arrange
+        var atm = new Atm();
+        atm.LoadMoney(Dollar);
+        atm.TakeMoney(Dollar.Amount);
+
+        // act
+        // assert
+        var balanceChangedEvent = atm.DomainEvents.First() as BalanceChangedEvent;
+        balanceChangedEvent.Should().NotBeNull();
+        balanceChangedEvent?.Amount.Should().Be(1.01m);
+    }
 }

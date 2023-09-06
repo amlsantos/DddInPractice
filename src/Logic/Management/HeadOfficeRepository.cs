@@ -1,10 +1,11 @@
 ﻿using Logic.Common;
+using MediatR;
 
 namespace Logic.Management;
 
 public class HeadOfficeRepository : Repository<HeadOffice>
 {
-    public HeadOfficeRepository(ApplicationDbContext context) : base(context)
+    public HeadOfficeRepository(IMediator mediator, ApplicationDbContext context) : base(mediator, context)
     {
     }
 }

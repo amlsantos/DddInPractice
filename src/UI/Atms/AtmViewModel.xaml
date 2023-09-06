@@ -39,7 +39,7 @@
                        FontWeight="Bold" Margin="0 30 0 0" />
 
                 <Image Grid.Column="4" Grid.Row="1" Source="{StaticResource img25Cent}" Width="100" />
-                <Label Grid.Column="5" Grid.Row="1" Content="{Binding MoneyInside.QuarterCount}" FontSize="20"
+                <Label Grid.Column="5" Grid.Row="1" Content="{Binding MoneyInside.QuarterCentCount}" FontSize="20"
                        FontWeight="Bold" Margin="0 30 0 0" />
 
                 <Image Grid.Column="0" Grid.Row="2" Source="{StaticResource img1Dollar}" Width="100" Margin="0 30 0 0" />

@@ -23,8 +23,8 @@ public class SnackMachineRepositorySpecs
             .UseSqlServer(ConnectionString)
             .Options;
         var context = new ApplicationDbContext(options);
-        _snackMachineRepository = new SnackMachineRepository(context);
-        _snackRepository = new SnackRepository(context);
+        _snackMachineRepository = new SnackMachineRepository(null, context);
+        _snackRepository = new SnackRepository(null, context);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class SnackMachineRepositorySpecs
     }
 
     [Fact]
-    public void NewSnackMachine_ShowBePersisted()
+    public async Task NewSnackMachine_ShowBePersisted()
     {
         // arrange
         var snackMachine = new SnackMachine();
@@ -59,7 +59,7 @@ public class SnackMachineRepositorySpecs
 
         // act
         _snackMachineRepository.Add(snackMachine);
-        var result = _snackMachineRepository.Save();
+        var result = await _snackMachineRepository.SaveChangesAsync();
 
         // assert
         result.Should().BeGreaterThanOrEqualTo(1);
@@ -69,7 +69,7 @@ public class SnackMachineRepositorySpecs
     private void Clear(SnackMachine snackMachine)
     {
         _snackMachineRepository.Remove(snackMachine);
-        _snackMachineRepository.Save();
+        _snackMachineRepository.SaveChangesAsync();
     }
 
     [Fact]

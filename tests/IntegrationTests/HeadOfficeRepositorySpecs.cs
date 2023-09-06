@@ -17,7 +17,7 @@ public class HeadOfficeRepositorySpecs
             .UseSqlServer(ConnectionString)
             .Options;
         var context = new ApplicationDbContext(options);
-        _repository = new HeadOfficeRepository(context);
+        _repository = new HeadOfficeRepository(null, context);
     }
 
     [Fact]

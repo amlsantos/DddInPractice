@@ -25,7 +25,7 @@ public class Atm : AggregateRoot
         return string.Empty;
     }
 
-    public void TakeMoney(decimal amount)
+    public void TakeMoney(decimal amount, long? headOfficeId = 1)
     {
         var errors = CanTakeMoney(amount);
         if (!string.IsNullOrEmpty(errors))
@@ -36,6 +36,8 @@ public class Atm : AggregateRoot
 
         var amountWithCommission = CalculateAmountWithCommission(amount);
         MoneyCharged += amountWithCommission;
+
+        AddDomainEvent(new BalanceChangedEvent(headOfficeId.Value, amountWithCommission));
     }
 
     public decimal CalculateAmountWithCommission(decimal amount)

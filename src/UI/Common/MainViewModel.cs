@@ -26,11 +26,10 @@ public class MainViewModel : ViewModel
         _gateway = gateway;
         _snackMachineRepository = snackMachineRepository;
 
-        const int existingEntity = 1;
-
         // var snackMachine = _snackMachineRepository.GetById(existingEntity);
         // var viewModel = new SnackMachineViewModel(snackMachine, snackMachineRepository);
 
+        const int existingEntity = 1;
         var atm = _atmRepository.GetById(existingEntity);
         var viewModel = new AtmViewModel(atm, atmRepository, gateway);
 

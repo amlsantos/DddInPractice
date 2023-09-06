@@ -3,6 +3,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using DevExpress.Mvvm;
 using Logic.SharedKernel;
 using Logic.SnackMachines;
 using UI.Common;
@@ -23,14 +25,14 @@ public class SnackMachineViewModel : ViewModel
         _snackMachine = snackMachine;
         _repository = repository;
 
-        InsertCentCommand = new Command(() => InsertMoney(Money.Cent));
-        InsertTenCentCommand = new Command(() => InsertMoney(Money.TenCent));
-        InsertQuarterCommand = new Command(() => InsertMoney(Money.Quarter));
-        InsertDollarCommand = new Command(() => InsertMoney(Money.Dollar));
-        InsertFiveDollarCommand = new Command(() => InsertMoney(Money.FiveDollar));
-        InsertTwentyDollarCommand = new Command(() => InsertMoney(Money.TwentyDollar));
-        ReturnMoneyCommand = new Command(ReturnMoney);
-        BuySnackCommand = new Command<string>(BuySnack);
+        InsertCentCommand = new DelegateCommand(() => InsertMoney(Money.Cent));
+        InsertTenCentCommand = new DelegateCommand(() => InsertMoney(Money.TenCent));
+        InsertQuarterCommand = new DelegateCommand(() => InsertMoney(Money.Quarter));
+        InsertDollarCommand = new DelegateCommand(() => InsertMoney(Money.Dollar));
+        InsertFiveDollarCommand = new DelegateCommand(() => InsertMoney(Money.FiveDollar));
+        InsertTwentyDollarCommand = new DelegateCommand(() => InsertMoney(Money.TwentyDollar));
+        ReturnMoneyCommand = new DelegateCommand(ReturnMoney);
+        BuySnackCommand = new AsyncCommand<string>(BuySnack);
     }
 
     public override string Caption => "Snack Machine";
@@ -49,14 +51,14 @@ public class SnackMachineViewModel : ViewModel
         }
     }
 
-    public Command InsertCentCommand { get; private set; }
-    public Command InsertTenCentCommand { get; private set; }
-    public Command InsertQuarterCommand { get; private set; }
-    public Command InsertDollarCommand { get; private set; }
-    public Command InsertFiveDollarCommand { get; private set; }
-    public Command InsertTwentyDollarCommand { get; private set; }
-    public Command ReturnMoneyCommand { get; private set; }
-    public Command<string> BuySnackCommand { get; private set; }
+    public DelegateCommand InsertCentCommand { get; private set; }
+    public DelegateCommand InsertTenCentCommand { get; private set; }
+    public DelegateCommand InsertQuarterCommand { get; private set; }
+    public DelegateCommand InsertDollarCommand { get; private set; }
+    public DelegateCommand InsertFiveDollarCommand { get; private set; }
+    public DelegateCommand InsertTwentyDollarCommand { get; private set; }
+    public DelegateCommand ReturnMoneyCommand { get; private set; }
+    public AsyncCommand<string> BuySnackCommand { get; private set; }
 
     private List<SnackPileViewModel> GetPiles()
     {
@@ -77,7 +79,7 @@ public class SnackMachineViewModel : ViewModel
         NotifyClient("Money was returned");
     }
 
-    private void BuySnack(string positionString)
+    private async Task BuySnack(string positionString)
     {
         var position = int.Parse(positionString);
         var error = _snackMachine.CanBuySnack(position);
@@ -88,7 +90,7 @@ public class SnackMachineViewModel : ViewModel
         }
 
         _snackMachine.BuySnack(position);
-        _repository.Save();
+        await _repository.SaveChangesAsync();
 
         NotifyClient("You have bought a snack");
     }

@@ -1,4 +1,6 @@
-﻿using Logic.Atms;
+﻿using System.Threading.Tasks;
+using DevExpress.Mvvm;
+using Logic.Atms;
 using Logic.SharedKernel;
 using UI.Common;
 
@@ -18,7 +20,7 @@ public class AtmViewModel : ViewModel
         _repository = repository;
         _gateway = gateway;
 
-        TakeMoneyCommand = new Command<decimal>(x => x > 0, TakeMoney);
+        TakeMoneyCommand = new AsyncCommand<decimal>(async amount => { await TakeMoney(amount); });
     }
 
     public override string Caption => "ATM";
@@ -36,9 +38,9 @@ public class AtmViewModel : ViewModel
         }
     }
 
-    public Command<decimal> TakeMoneyCommand { get; }
+    public AsyncCommand<decimal> TakeMoneyCommand { get; }
 
-    private void TakeMoney(decimal amount)
+    private async Task TakeMoney(decimal amount)
     {
         var error = _atm.CanTakeMoney(amount);
         if (!string.IsNullOrEmpty(error))
@@ -51,7 +53,7 @@ public class AtmViewModel : ViewModel
         _gateway.ChargePayment(amountWithCommission);
         _atm.TakeMoney(amount);
 
-        _repository.Save();
+        await _repository.SaveChangesAsync();
 
         NotifyClient("You have taken " + amount.ToString("C2"));
     }

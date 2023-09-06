@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using Logic.Atms;
 using Logic.Common;
+using Logic.Management;
 using Logic.SnackMachines;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -52,6 +53,7 @@ public partial class App : Application
         services.AddScoped<IPaymentGateway, PaymentGateway>();
 
         services.AddScoped<SnackMachineRepository>();
+        services.AddScoped<HeadOfficeRepository>();
         services.AddScoped<AtmRepository>();
         services.AddScoped<SnackRepository>();
 
@@ -61,6 +63,9 @@ public partial class App : Application
 
         // view models
         services.AddScoped<MainViewModel>();
+
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
     }
 
     private void OnStartup(object sender, StartupEventArgs e)

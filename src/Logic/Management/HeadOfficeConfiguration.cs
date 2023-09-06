@@ -22,5 +22,7 @@ public class HeadOfficeConfiguration : IEntityTypeConfiguration<HeadOffice>
         cash.Property(e => e.OneDollarCount).HasColumnName("OneDollarCount");
         cash.Property(e => e.FiveDollarCount).HasColumnName("FiveDollarCount");
         cash.Property(e => e.TwentyDollarCount).HasColumnName("TwentyDollarCount");
+        
+        entity.Ignore(e => e.DomainEvents);
     }
 }

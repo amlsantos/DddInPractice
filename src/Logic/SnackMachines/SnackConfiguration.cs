@@ -15,5 +15,7 @@ public class SnackConfiguration : IEntityTypeConfiguration<Snack>
         entity.HasKey(e => e.Id);
         entity.Property(s => s.Id).HasColumnName("SnackId");
         entity.Property(e => e.Id).HasColumnType("bigint");
+
+        entity.Ignore(e => e.DomainEvents);
     }
 }
