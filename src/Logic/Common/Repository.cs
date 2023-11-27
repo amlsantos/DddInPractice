@@ -1,8 +1,4 @@
-﻿#region
-
-using Logic.SnackMachines;
-
-#endregion
+﻿using Logic.SnackMachines;
 
 namespace Logic.Common;
 
