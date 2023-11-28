@@ -1,6 +1,4 @@
-﻿#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,8 +6,6 @@ using DevExpress.Mvvm;
 using Logic.SharedKernel;
 using Logic.SnackMachines;
 using UI.Common;
-
-#endregion
 
 namespace UI.SnackMachines;
 

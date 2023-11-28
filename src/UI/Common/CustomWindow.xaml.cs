@@ -1,15 +1,13 @@
-﻿#region
-
-using System.Windows;
-
-#endregion
+﻿using System.Windows;
 
 namespace UI.Common;
 
 public partial class CustomWindow : Window
 {
-    public CustomWindow()
+    public CustomWindow(ViewModel model)
     {
         InitializeComponent();
+
+        DataContext = model;
     }
 }

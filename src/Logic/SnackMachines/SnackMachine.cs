@@ -30,6 +30,16 @@ public sealed class SnackMachine : AggregateRoot
         MoneyInside += money;
     }
 
+    public Money UnloadMoney()
+    {
+        if (MoneyInTransaction > 0)
+            throw new InvalidOperationException();
+
+        var money = MoneyInside;
+        MoneyInside = None;
+        return money;
+    }
+
     public void LoadMoney(Money money)
     {
         MoneyInside += money;

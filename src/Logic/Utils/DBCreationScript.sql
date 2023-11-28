@@ -138,7 +138,7 @@ SET IDENTITY_INSERT [dbo].[Snack] OFF;
 
 SET IDENTITY_INSERT [dbo].[Slot] ON;
 GO
-INSERT [dbo].[Slot] ([SlotID], [Quantity], [Price], [SnackID], [SnackMachineID], [Position]) VALUES (1, 10, CAST(3.00 AS Decimal(18, 2)), 1, 1, 1)
+INSERT [dbo].[Slot] ([SlotID], [Quantity], [Price], [SnackID], [SnackMachineID], [Position]) VALUES (1, 10, CAST(3.00 AS Decimal(18, 2)), 4, 1, 1)
 GO
 INSERT [dbo].[Slot] ([SlotID], [Quantity], [Price], [SnackID], [SnackMachineID], [Position]) VALUES (2, 15, CAST(2.00 AS Decimal(18, 2)), 2, 1, 2)
 GO

@@ -1,9 +1,5 @@
-﻿#region
-
-using Logic.Common;
+﻿using Logic.Common;
 using Microsoft.EntityFrameworkCore;
-
-#endregion
 
 namespace Logic.SnackMachines;
 
@@ -22,5 +18,13 @@ public class SnackMachineRepository : Repository<SnackMachine>
             .ToList();
 
         return snacks.Single(x => x.Id == id);
+    }
+
+    public IReadOnlyList<SnackMachineDto> GetSnackMachineList()
+    {
+        return Context.SnackMachines.AsNoTracking()
+            .Select(s =>
+                new SnackMachineDto(s.Id, s.MoneyInside.Amount))
+            .ToList();
     }
 }
