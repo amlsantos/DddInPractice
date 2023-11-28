@@ -1,5 +1,4 @@
-![build](https://github.com/amlsantos/DddInPractice/blob/main/.github/workflows/dotnet.yml/badge.svg)
-![test](https://github.com/amlsantos/DddInPractice/blob/main/.github/workflows/dotnet.yml/badge.svg)
+![build](https://github.com/amlsantos/DddInPractice/actions/workflows/dotnet.yml/badge.svg)
 
 # Domain Driven Design in Practice
 This is the source code for the pluralsight course [Domain-Driven Design in Practice](https://www.pluralsight.com/courses/domain-driven-design-in-practice), using .NET 7.
